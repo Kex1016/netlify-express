@@ -1,8 +1,8 @@
 import express, { Router } from "express";
 import serverless from "serverless-http";
-import { ALIndex } from "../util/anilist";
-import { ALDiscord } from "../util/anilist/discord";
-import { ALStatsFM } from "../util/anilist/statsfm";
+import { ALIndex } from "../pages/anilist";
+import { ALDiscord } from "../pages/anilist/discord";
+import { ALStatsFM } from "../pages/anilist/statsfm";
 
 const api = express();
 
