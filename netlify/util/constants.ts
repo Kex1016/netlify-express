@@ -21,6 +21,10 @@ export const errorHtml = (req: Request, res: Response) => html`<html>
     <main>
       <h1>You are not supposed to be here!</h1>
       <h2>Check out what's here then I guess:</h2>
+      <h3>
+        DISCLAIMER: THIS IS EXTREMELY EARLY IN DEV. CHECK OUT GH REPO IN THE
+        FOOTER. NOTHING IS WORKING YET.
+      </h3>
 
       <ul>
         <li>

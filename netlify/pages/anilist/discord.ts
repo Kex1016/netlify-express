@@ -11,5 +11,6 @@ export async function ALDiscord(req: Request, res: Response) {
   ).then((res) => res.json());
   const avatar = `https://cdn.discordapp.com/avatars/${discUser.id}/${discUser.avatar}.png?size=1024`;
 
-  res.send(`hello world! <img src="${avatar}" />`);
+  // TODO: Make this an svg, and send it as an image or whatever
+  res.send(`hello world!<br>discord avatar:<br><img src="${avatar}" />`);
 }
