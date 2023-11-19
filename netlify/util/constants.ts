@@ -1,6 +1,6 @@
 const html = String.raw;
 
-export const errorHtml = () => html`
+export const errorHtml = html`
     <html lang="en">
     <head>
         <title>Anilist</title>
