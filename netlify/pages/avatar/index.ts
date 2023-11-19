@@ -1,6 +1,4 @@
 import { Response, Request } from "express";
-import * as fs from "fs";
-import {join} from "path";
 
 export async function RandomAvatar(req: Request, res: Response) {
   const avatars = [
