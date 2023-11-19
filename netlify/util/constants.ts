@@ -1,9 +1,7 @@
-import {Response, Request} from "express";
-
 const html = String.raw;
 
-export const errorHtml = (req: Request, res: Response) => html`
-    <html>
+export const errorHtml = () => html`
+    <html lang="en">
     <head>
         <title>Anilist</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -31,6 +29,9 @@ export const errorHtml = (req: Request, res: Response) => html`
             </li>
             <li>
                 <a href="/anilist/statsfm">stats.fm profile svg</a>
+            </li>
+            <li>
+                <a href="/avatar">random avatar</a>
             </li>
         </ul>
     </main>
