@@ -42,45 +42,63 @@ type DiscordResponse = {
 };
 
 export async function StatsFmSvg(req: Request, res: Response) {
-  let cached = cache.get("statsfm") as DiscordResponse | undefined;
+  let sfmCached = cache.get("statsfm") as DiscordResponse | undefined;
 
-  if (!cached) {
+  if (!sfmCached) {
     const resp = await fetch("https://cakes-api.netlify.app/statsfm").then(
       (res) => res.json()
     );
 
-    cached = {
+    sfmCached = {
       ...resp,
     };
 
-    cache.put("statsfm", cached, 1000 * 60);
+    cache.put("statsfm", sfmCached, 1000 * 60);
   }
 
-  // Get file and make it into a buffer
-  const baseUrl = "https://downloads.haiiro.moe/fonts/";
-  const fontRegularBuffer = await fetch(baseUrl + "Roboto-Regular.ttf").then(
-    (res) => res.arrayBuffer()
-  );
+  let fontRegular: string, fontBold: string, fontLight: string;
 
-  const fontRegular = `data:font/ttf;base64,${Buffer.from(
-    fontRegularBuffer
-  ).toString("base64")}`;
+  type FontType = {
+    fontRegular: string;
+    fontBold: string;
+    fontLight: string;
+  };
 
-  const fontBoldBuffer = await fetch(baseUrl + "Roboto-Bold.ttf").then((res) =>
-    res.arrayBuffer()
-  );
+  const fontCache = cache.get("fonts") as FontType | undefined;
 
-  const fontBold = `data:font/ttf;base64,${Buffer.from(fontBoldBuffer).toString(
-    "base64"
-  )}`;
+  if (fontCache) {
+    fontRegular = fontCache.fontRegular;
+    fontBold = fontCache.fontBold;
+    fontLight = fontCache.fontLight;
+  } else {
+    // Get file and make it into a buffer
+    const baseUrl = "https://downloads.haiiro.moe/fonts/";
+    const fontRegularBuffer = await fetch(baseUrl + "Roboto-Regular.ttf").then(
+      (res) => res.arrayBuffer()
+    );
 
-  const fontLightBuffer = await fetch(baseUrl + "Roboto-Light.ttf").then(
-    (res) => res.arrayBuffer()
-  );
+    fontRegular = `data:font/ttf;base64,${Buffer.from(
+      fontRegularBuffer
+    ).toString("base64")}`;
 
-  const fontLight = `data:font/ttf;base64,${Buffer.from(
-    fontLightBuffer
-  ).toString("base64")}`;
+    const fontBoldBuffer = await fetch(baseUrl + "Roboto-Bold.ttf").then(
+      (res) => res.arrayBuffer()
+    );
+
+    fontBold = `data:font/ttf;base64,${Buffer.from(fontBoldBuffer).toString(
+      "base64"
+    )}`;
+
+    const fontLightBuffer = await fetch(baseUrl + "Roboto-Light.ttf").then(
+      (res) => res.arrayBuffer()
+    );
+
+    fontLight = `data:font/ttf;base64,${Buffer.from(fontLightBuffer).toString(
+      "base64"
+    )}`;
+
+    cache.put("fonts", { fontRegular, fontBold, fontLight }, 1000 * 60 * 60);
+  }
 
   const fontCSS = `
     @font-face {
@@ -103,20 +121,29 @@ export async function StatsFmSvg(req: Request, res: Response) {
     }
   `;
 
-  const imageBuffer = await fetch(
-    cached!.current.item.track.albums[0].image
-  ).then((res) => res.arrayBuffer());
+  let image: string;
+  const cacheCover = cache.get("cover") as string | undefined;
 
-  const imageExtension = cached!.current.item.track.albums[0].image
-    .split(".")
-    .pop();
+  if (cacheCover) {
+    image = cacheCover;
+  } else {
+    const imageBuffer = await fetch(
+      sfmCached!.current.item.track.albums[0].image
+    ).then((res) => res.arrayBuffer());
 
-  const image = `data:image/${imageExtension};base64,${Buffer.from(
-    imageBuffer
-  ).toString("base64")}`;
+    const imageExtension = sfmCached!.current.item.track.albums[0].image
+      .split(".")
+      .pop();
+
+    image = `data:image/${imageExtension};base64,${Buffer.from(
+      imageBuffer
+    ).toString("base64")}`;
+
+    cache.put("cover", image, 1000 * 10);
+  }
 
   const response = svg`
-  <svg width="750" height="450" xmlns="http://www.w3.org/2000/svg">
+  <svg width="750" height="350" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <!-- Rounded rect mask for the avatar -->
       <mask id="avatar-mask">
@@ -167,21 +194,21 @@ export async function StatsFmSvg(req: Request, res: Response) {
         href="${image}" />
       <!-- Song name -->
       <text x="0" y="0" font-size="40" text-anchor="middle" id="song-name">
-        ${cached!.current.item.track.name
+        ${sfmCached!.current.item.track.name
           .replace(/&/g, "&amp;")
           .replace(/</g, "&lt;")
           .replace(/>/g, "&gt;")}
       </text>
       <!-- Artist name -->
       <text x="0" y="40" font-size="30" text-anchor="middle" id="artist-name">
-        ${cached!.current.item.track.artists[0].name
+        ${sfmCached!.current.item.track.artists[0].name
           .replace(/&/g, "&amp;")
           .replace(/</g, "&lt;")
           .replace(/>/g, "&gt;")}
       </text>
       <!-- Album -->
       <text x="0" y="90" font-size="20" text-anchor="middle" id="album">
-        ${cached!.current.item.track.albums[0].name
+        ${sfmCached!.current.item.track.albums[0].name
           .replace(/&/g, "&amp;")
           .replace(/</g, "&lt;")
           .replace(/>/g, "&gt;")}
