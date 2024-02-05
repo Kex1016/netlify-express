@@ -56,67 +56,34 @@ export async function StatsFmSvg(req: Request, res: Response) {
     cache.put("statsfm", sfmCached, 1000 * 60);
   }
 
-  let fontRegular: string, fontBold: string, fontLight: string;
+  let fontRegular: string;
 
   type FontType = {
     fontRegular: string;
-    fontBold: string;
-    fontLight: string;
   };
 
   const fontCache = cache.get("fonts") as FontType | undefined;
 
   if (fontCache) {
     fontRegular = fontCache.fontRegular;
-    fontBold = fontCache.fontBold;
-    fontLight = fontCache.fontLight;
   } else {
     // Get file and make it into a buffer
     const baseUrl = "https://downloads.haiiro.moe/fonts/";
-    const fontRegularBuffer = await fetch(baseUrl + "Roboto-Regular.ttf").then(
-      (res) => res.arrayBuffer()
-    );
+    const fontRegularBuffer = await fetch(
+      baseUrl + "ReenieBeanie-Regular.ttf"
+    ).then((res) => res.arrayBuffer());
 
     fontRegular = `data:font/ttf;base64,${Buffer.from(
       fontRegularBuffer
     ).toString("base64")}`;
 
-    const fontBoldBuffer = await fetch(baseUrl + "Roboto-Bold.ttf").then(
-      (res) => res.arrayBuffer()
-    );
-
-    fontBold = `data:font/ttf;base64,${Buffer.from(fontBoldBuffer).toString(
-      "base64"
-    )}`;
-
-    const fontLightBuffer = await fetch(baseUrl + "Roboto-Light.ttf").then(
-      (res) => res.arrayBuffer()
-    );
-
-    fontLight = `data:font/ttf;base64,${Buffer.from(fontLightBuffer).toString(
-      "base64"
-    )}`;
-
-    cache.put("fonts", { fontRegular, fontBold, fontLight }, 1000 * 60 * 60);
+    cache.put("fonts", { fontRegular }, 1000 * 60 * 60);
   }
 
   const fontCSS = `
     @font-face {
       font-family: "TheFont";
       src: url("${fontRegular}") format("truetype");
-      font-weight: 400;
-      font-style: normal;
-    }
-    @font-face {
-      font-family: "TheFont";
-      src: url("${fontBold}") format("truetype");
-      font-weight: 700;
-      font-style: normal;
-    }
-    @font-face {
-      font-family: "TheFont";
-      src: url("${fontLight}") format("truetype");
-      font-weight: 300;
       font-style: normal;
     }
   `;
