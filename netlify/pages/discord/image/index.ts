@@ -28,7 +28,7 @@ type DiscordResponse = {
   avatarUrl: string;
 };
 
-export async function ALDiscordSvg(req: Request, res: Response) {
+export async function DiscordSvg(req: Request, res: Response) {
   let cached = cache.get("discord") as DiscordResponse | undefined;
 
   if (!cached) {
