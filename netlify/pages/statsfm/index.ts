@@ -4,7 +4,7 @@ import { Cache } from "memory-cache";
 
 const cache = new Cache();
 
-export async function ALStatsFM(req: Request, res: Response) {
+export async function StatsFM(req: Request, res: Response) {
   const cached = cache.get("statsfm");
   if (cached) {
     res.send(cached);

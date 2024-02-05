@@ -1,11 +1,11 @@
 import express, { Router } from "express";
 import serverless from "serverless-http";
-import { ALIndex } from "../pages/anilist";
-import { ALDiscord } from "../pages/anilist/discord";
-import { ALStatsFM } from "../pages/anilist/statsfm";
+import { AniList } from "../pages/anilist";
+import { Discord } from "../pages/discord";
+import { StatsFM } from "../pages/statsfm";
 import { Index } from "../pages";
 import { config } from "dotenv";
-import {RandomAvatar} from "../pages/avatar";
+import { RandomAvatar } from "../pages/avatar";
 
 config();
 
@@ -13,9 +13,9 @@ const api = express();
 
 const router = Router();
 router.get("/", (req, res) => Index(req, res));
-router.get("/anilist", (req, res) => ALIndex(req, res));
-router.get("/anilist/discord", (req, res) => ALDiscord(req, res));
-router.get("/anilist/statsfm", (req, res) => ALStatsFM(req, res));
+router.get("/anilist", (req, res) => AniList(req, res));
+router.get("/discord", (req, res) => Discord(req, res));
+router.get("/statsfm", (req, res) => StatsFM(req, res));
 router.get("/avatar", (req, res) => RandomAvatar(req, res));
 
 api.use(router);

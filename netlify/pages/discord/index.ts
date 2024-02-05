@@ -4,7 +4,7 @@ import { Cache } from "memory-cache";
 
 const cache = new Cache();
 
-export async function ALDiscord(req: Request, res: Response) {
+export async function Discord(req: Request, res: Response) {
   const cached = cache.get("discord");
   if (cached) {
     res.send(cached);
@@ -20,6 +20,11 @@ export async function ALDiscord(req: Request, res: Response) {
     }
   ).then((res) => res.json());
   const avatar = `https://cdn.discordapp.com/avatars/${discUser.id}/${discUser.avatar}.png?size=1024`;
+
+  // Remove "flags", "public_flags" and "premium_type" from the response
+  delete discUser.flags;
+  delete discUser.public_flags;
+  delete discUser.premium_type;
 
   const response = {
     ...discUser,
