@@ -12,33 +12,36 @@ function svg(strings: TemplateStringsArray, ...keys: string[]) {
   return result;
 }
 
+type SfmCurrent = {
+  item: {
+    date: string;
+    isPlaying: boolean;
+    progressMs: number;
+    deviceName: string;
+    track: {
+      albums: {
+        id: number;
+        image: string;
+        name: string;
+      }[];
+      artists: {
+        id: number;
+        name: string;
+      }[];
+      durationMs: number;
+      explicit: boolean;
+      id: number;
+      name: string;
+    };
+    platform: string;
+  };
+  message?: string;
+};
+
 type DiscordResponse = {
   profile: any;
   streams: any;
-  current: {
-    item: {
-      date: string;
-      isPlaying: boolean;
-      progressMs: number;
-      deviceName: string;
-      track: {
-        albums: {
-          id: number;
-          image: string;
-          name: string;
-        }[];
-        artists: {
-          id: number;
-          name: string;
-        }[];
-        durationMs: number;
-        explicit: boolean;
-        id: number;
-        name: string;
-      };
-      platform: string;
-    };
-  };
+  current: SfmCurrent;
 };
 
 export async function StatsFmSvg(req: Request, res: Response) {
@@ -54,6 +57,15 @@ export async function StatsFmSvg(req: Request, res: Response) {
     };
 
     cache.put("statsfm", sfmCached, 1000 * 60);
+  }
+
+  if (sfmCached!.current.message) {
+    // Send an empty SVG
+    res.setHeader("Content-Type", "image/svg+xml");
+    res.send(
+      svg`<svg width="0" height="0" xmlns="http://www.w3.org/2000/svg"></svg>`
+    );
+    return;
   }
 
   let fontRegular: string;
