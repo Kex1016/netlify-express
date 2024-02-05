@@ -32,9 +32,9 @@ export async function DiscordSvg(req: Request, res: Response) {
   let cached = cache.get("discord") as DiscordResponse | undefined;
 
   if (!cached) {
-    const discUser = await fetch(
-      `https://cakes-api.netlify.app/anilist/discord`
-    ).then((res) => res.json());
+    const discUser = await fetch(`https://cakes-api.netlify.app/discord`).then(
+      (res) => res.json()
+    );
 
     cached = {
       ...discUser,
