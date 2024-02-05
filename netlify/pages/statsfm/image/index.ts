@@ -122,7 +122,7 @@ export async function StatsFmSvg(req: Request, res: Response) {
   }
 
   const response = svg`
-  <svg width="750" height="350" xmlns="http://www.w3.org/2000/svg">
+  <svg width="750" height="370" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <!-- Rounded rect mask for the avatar -->
       <mask id="avatar-mask">
@@ -146,23 +146,23 @@ export async function StatsFmSvg(req: Request, res: Response) {
         }
 
         #song-name {
-          transform: translate(50%, calc(512px * var(--scale) + 40px));
+          transform: translate(50%, calc(512px * var(--scale) + 60px));
           font-weight: 700;
         }
 
         #artist-name {
-          transform: translate(50%, calc(512px * var(--scale) + 40px));
+          transform: translate(50%, calc(512px * var(--scale) + 60px));
           font-weight: 400;
         }
 
         #album {
-          transform: translate(50%, calc(512px * var(--scale) + 40px));
+          transform: translate(50%, calc(512px * var(--scale) + 60px));
           font-weight: 300;
         }
 
         #cover {
           mask: url(#avatar-mask);
-          transform: translate(calc(50% - (var(--scale) * 512px / 2)), 0) scale(var(--scale));
+          transform: translate(calc(50% - (var(--scale) * 512px / 2)), 20px) scale(var(--scale));
           border-radius: 93% 7% 92% 8% / 3% 91% 9% 97%;
         }
       </style>
