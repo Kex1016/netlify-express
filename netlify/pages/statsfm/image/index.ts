@@ -155,15 +155,24 @@ export async function StatsFmSvg(req: Request, res: Response) {
         href="${cached!.current.item.track.albums[0].image}" />
       <!-- Song name -->
       <text x="0" y="0" font-size="40" text-anchor="middle" id="song-name">
-        ${cached!.current.item.track.name}
+        ${cached!.current.item.track.name
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")}
       </text>
       <!-- Artist name -->
       <text x="0" y="40" font-size="30" text-anchor="middle" id="artist-name">
-        ${cached!.current.item.track.artists[0].name}
+        ${cached!.current.item.track.artists[0].name
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")}
       </text>
       <!-- Album -->
       <text x="0" y="90" font-size="20" text-anchor="middle" id="album">
-        ${cached!.current.item.track.albums[0].name}
+        ${cached!.current.item.track.albums[0].name
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")}
       </text>
     </g>
   </svg>
