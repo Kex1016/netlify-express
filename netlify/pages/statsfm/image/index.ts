@@ -103,6 +103,18 @@ export async function StatsFmSvg(req: Request, res: Response) {
     }
   `;
 
+  const imageBuffer = await fetch(
+    cached!.current.item.track.albums[0].image
+  ).then((res) => res.arrayBuffer());
+
+  const imageExtension = cached!.current.item.track.albums[0].image
+    .split(".")
+    .pop();
+
+  const image = `data:image/${imageExtension};base64,${Buffer.from(
+    imageBuffer
+  ).toString("base64")}`;
+
   const response = svg`
   <svg width="750" height="450" xmlns="http://www.w3.org/2000/svg">
     <defs>
@@ -152,7 +164,7 @@ export async function StatsFmSvg(req: Request, res: Response) {
     <g id="main">
       <!-- Cover image -->
       <image x="0" y="0" width="512" height="512" id="cover"
-        href="${cached!.current.item.track.albums[0].image}" />
+        href="${image}" />
       <!-- Song name -->
       <text x="0" y="0" font-size="40" text-anchor="middle" id="song-name">
         ${cached!.current.item.track.name

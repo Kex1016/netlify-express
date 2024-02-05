@@ -28,7 +28,7 @@ export async function StatsFM(req: Request, res: Response) {
     current,
   };
 
-  cache.put("statsfm", response, 500);
+  cache.put("statsfm", response, 1000 * 30);
 
   res.send(response);
 }
