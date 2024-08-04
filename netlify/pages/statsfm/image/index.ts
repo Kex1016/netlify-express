@@ -164,7 +164,12 @@ export async function StatsFmSvg(req: Request, res: Response) {
 
         text {
           mask: url(#text-mask);
-          fill: white;
+          paint-order: stroke fill;
+          fill: #FCBC9C;
+          stroke: #4D392F;
+          stroke-width: 5px;
+          stroke-linejoin: miter;
+          stroke-linecap: butt;
           font-family: 'TheFont', sans-serif;
         }
 
