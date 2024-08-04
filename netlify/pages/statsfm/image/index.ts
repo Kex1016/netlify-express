@@ -148,10 +148,10 @@ export async function StatsFmSvg(req: Request, res: Response) {
         <feComposite operator="in" in2="SourceGraphic"/>
       </filter>
       <mask id="text-mask" x="0" y="0" width="100%" height="100%">
-        <linearGradient id="mask-gradient" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stop-color="white" />
-          <stop offset="0.85" stop-color="white" />
-          <stop offset="1" stop-color="black" />
+        <linearGradient id="mask-gradient">
+          <stop offset="0%" stop-color="white" />
+          <stop offset="85%" stop-color="white" />
+          <stop offset="100%" stop-color="black" />
         </linearGradient>
         <rect x="0" y="0" width="100%" height="100%" fill="url(#mask-gradient)" />
       </mask>
@@ -165,7 +165,6 @@ export async function StatsFmSvg(req: Request, res: Response) {
         text {
           fill: white;
           font-family: 'TheFont', sans-serif;
-          mask: url(#text-mask);
         }
 
         #cover {
@@ -198,21 +197,21 @@ export async function StatsFmSvg(req: Request, res: Response) {
       <image x="0" y="0" width="512" height="512" id="cover"
         href="${image}" />
       <!-- Song name -->
-      <text x="0" y="0" id="song-name">
+      <text x="0" y="0" id="song-name" mask="url(#text-mask)">
         ${sfmCached!.current.item.track.name
           .replace(/&/g, "&amp;")
           .replace(/</g, "&lt;")
           .replace(/>/g, "&gt;")}
       </text>
       <!-- Artist name -->
-      <text x="0" y="0" id="artist-name">
+      <text x="0" y="0" id="artist-name" mask="url(#text-mask)">
         ${sfmCached!.current.item.track.artists[0].name
           .replace(/&/g, "&amp;")
           .replace(/</g, "&lt;")
           .replace(/>/g, "&gt;")}
       </text>
       <!-- Album -->
-      <text x="0" y="0" id="album">
+      <text x="0" y="0" id="album" mask="url(#text-mask)">
         ${sfmCached!.current.item.track.albums[0].name
           .replace(/&/g, "&amp;")
           .replace(/</g, "&lt;")
