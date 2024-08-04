@@ -163,6 +163,7 @@ export async function StatsFmSvg(req: Request, res: Response) {
         }
 
         text {
+          mask: url(#text-mask);
           fill: white;
           font-family: 'TheFont', sans-serif;
         }
@@ -175,19 +176,16 @@ export async function StatsFmSvg(req: Request, res: Response) {
   
         #song-name {
           font-size: 50px;
-          transform: translate(calc((512px * var(--scale)) + 30px), 100px);
           font-weight: bold;
         }
 
         #artist-name {
           font-size: 40px;
-          transform: translate(calc((512px * var(--scale)) + 30px), 145px);
           font-weight: normal;
         }
 
         #album {
           font-size: 25px;
-          transform: translate(calc((512px * var(--scale)) + 30px), 200px);
           font-weight: normal;
         }
       </style>
@@ -197,21 +195,21 @@ export async function StatsFmSvg(req: Request, res: Response) {
       <image x="0" y="0" width="512" height="512" id="cover"
         href="${image}" />
       <!-- Song name -->
-      <text x="0" y="0" id="song-name" mask="url(#text-mask)">
+      <text x="234.8px" y="100px" id="song-name">
         ${sfmCached!.current.item.track.name
           .replace(/&/g, "&amp;")
           .replace(/</g, "&lt;")
           .replace(/>/g, "&gt;")}
       </text>
       <!-- Artist name -->
-      <text x="0" y="0" id="artist-name" mask="url(#text-mask)">
+      <text x="234.8px" y="145px" id="artist-name">
         ${sfmCached!.current.item.track.artists[0].name
           .replace(/&/g, "&amp;")
           .replace(/</g, "&lt;")
           .replace(/>/g, "&gt;")}
       </text>
       <!-- Album -->
-      <text x="0" y="0" id="album" mask="url(#text-mask)">
+      <text x="234.8px" y="200px" id="album">
         ${sfmCached!.current.item.track.albums[0].name
           .replace(/&/g, "&amp;")
           .replace(/</g, "&lt;")
